@@ -2,9 +2,12 @@
   "name": "dux",
   "version": "0.1.0",
   "description": "Redux inspired Flux Stores",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "test": "tape test/**/*.js | tap-dot"
+    "clean": "rm -rf tmp && rm -rf lib",
+    "test": "npm run clean && webpack ./test/createStore.spec.js ./tmp/test.js --config ./test.config.js && tape ./tmp/test.js | tap-dot",
+    "lint": "npm run clean && eslint ./",
+    "build": "npm run clean && webpack ./index.js ./lib/index.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +17,11 @@
     "redux",
     "flux"
   ],
-  "author": "dictions",
+  "author": {
+    "name": "Ian Williams",
+    "email": "me@ianwillia.ms",
+    "url": "http://ianwillia.ms"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dictions/dux/issues"
@@ -29,5 +36,10 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-loader": "^6.2.0",
     "webpack": "^1.12.9"
+  },
+  "dependencies": {
+    "flux": "^2.1.1",
+    "invariant": "^2.2.0",
+    "lodash": "^3.10.1"
   }
 }
