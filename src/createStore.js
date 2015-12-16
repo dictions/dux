@@ -1,45 +1,47 @@
 'use strict';
 
-const Flux = require('flux');
-const invariant = require('invariant');
-const assign = require('lodash/object/assign');
-const CHANGE_EVENT = 'CHANGE';
+var Dispatcher = require('flux').Dispatcher;
+var assign = require('lodash/object/assign');
+var CHANGE_EVENT = 'CHANGE';
 
-const createStore = function(dispatcher, options) {
+var createStore = function(dispatcher, options) {
 
-	invariant(
-		!(dispatcher instanceof Flux),
-		'First argument must be an instance of a Flux Dispatcher'
-	);
+	if (!(dispatcher instanceof Dispatcher)) {
+		throw new Error('First argument must be an instance of a Flux Dispatcher');
+	}
 
-	invariant(
-		!('getInitialState' in options),
-		'getIntialState is missing from options'
-	);
+	if (options === null || typeof options !== 'object') {
+		throw new Error('Options must be an object');
+	}
 
-	let state;
-	let listeners = {
+	if (!('getInitialState' in options)) {
+		throw new Error('getIntialState is missing from Options');
+	}
+
+	var state = options.getIntialState();
+
+	var listeners = {
 		[CHANGE_EVENT]: []
 	};
 
-	const dispatchAction = function(action) {
+	var dispatchAction = function(action) {
 		if (action.type in options) {
 			state = options[action.type](state, action);
-			let callbacks = (listeners[action.type] || []).concat(listeners[CHANGE_EVENT]);
+			var callbacks = (listeners[action.type] || []).concat(listeners[CHANGE_EVENT]);
 			callbacks.forEach(c => c());
 		}
 	};
 
-	const dispatchToken = dispatcher.register(dispatchAction);
+	var dispatchToken = dispatcher.register(dispatchAction);
 
-	const getState = function() {
+	var getState = function() {
 		if (dispatcher.isDispatching()) {
 			dispatcher.waitFor([dispatchToken]);
 		}
-		return state || options.getInitialState();
+		return state;
 	};
 
-	const subscribe = function(event, callback) {
+	var subscribe = function(event, callback) {
 		if (typeof event === 'function') {
 			callback = event;
 			event = CHANGE_EVENT;
@@ -50,7 +52,7 @@ const createStore = function(dispatcher, options) {
 		listeners.push[callback];
 	};
 
-	const unsubscribe = function(event, callback) {
+	var unsubscribe = function(event, callback) {
 		if (typeof event === 'function') {
 			callback = event;
 			event = CHANGE_EVENT;
@@ -59,17 +61,18 @@ const createStore = function(dispatcher, options) {
 			listeners[event] = [];
 		} else {
 			listeners[event] = listeners[event].filter(function(c) {
-				c !== callback;
+				return c !== callback;
 			});
 		}
 	};
 
-	return assign({}, {
+	return assign({}, options, {
 		dispatchToken,
+		listeners,
 		getState,
 		subscribe,
 		unsubscribe
-	}, options);
+	});
 };
 
 module.exports = createStore;

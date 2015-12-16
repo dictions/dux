@@ -1,7 +1,6 @@
 'use strict';
 
 var path = require('path');
-var webpack = require('webpack');
 
 module.exports = {
 	// https://github.com/webpack/jade-loader/issues/8#issuecomment-55568520
@@ -18,14 +17,10 @@ module.exports = {
 				test: /\.jsx?$/,
 				loaders: ['babel'],
 				include: [
-					path.resolve(__dirname, './src'),
-					path.resolve(__dirname, './test')
+					path.resolve(__dirname, './test'),
+					path.resolve(__dirname, './src')
 				]
 			}
 		]
-	},
-	plugins: [
-		// Remove duplicate modules
-		new webpack.optimize.DedupePlugin()
-	]
+	}
 };
