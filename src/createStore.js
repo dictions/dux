@@ -2,21 +2,25 @@
 
 var Dispatcher = require('flux').Dispatcher;
 var assign = require('lodash/object/assign');
+var invariant = require('invariant');
 var CHANGE_EVENT = 'CHANGE';
 
 var createStore = function(dispatcher, options) {
 
-	if (!(dispatcher instanceof Dispatcher)) {
-		throw new Error('First argument must be an instance of a Flux Dispatcher');
-	}
+	invariant(
+		dispatcher instanceof Dispatcher,
+		'First argument must be an instance of a Flux Dispatcher'
+	);
 
-	if (options === null || typeof options !== 'object') {
-		throw new Error('Options must be an object');
-	}
+	invariant(
+		options !== null && typeof options === 'object',
+		'Options must be an object'
+	);
 
-	if (!('getInitialState' in options)) {
-		throw new Error('getIntialState is missing from Options');
-	}
+	invariant(
+		'getInitialState' in options,
+		'getIntialState is missing from Options'
+	);
 
 	var state = options.getIntialState();
 
