@@ -61,7 +61,7 @@ store.subscribe('EVENT', function() {
 });
 ```
 
-### store.subscribe (event, callback)
+### store.unsubscribe (event, callback)
 Unsubscribe callback from Store events. Event Type is also optional
 ```js
 store.unsubscribe('EVENT', callback);
