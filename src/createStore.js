@@ -50,7 +50,6 @@ var createStore = function(dispatcher, options) {
 			listeners[event] = [];
 		}
 		listeners[event].push(callback);
-		return this;
 	};
 
 	var unsubscribe = function(event, callback) {
@@ -65,7 +64,6 @@ var createStore = function(dispatcher, options) {
 				return c !== callback;
 			});
 		}
-		return this;
 	};
 
 	return _assign({}, options, {
