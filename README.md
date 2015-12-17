@@ -25,8 +25,8 @@ var Store = Dux.createStore(app, ...options);
 ### getInitialState
 `getInitialState` returns the intial state of the store
 
-### Action Reducers
-Action Reducers are reducers that are called on a store when an action matches the action type. Action Reducers are passed the current state object, as well as the matching action.
+### Action Reducers (currentState, action)
+Action Reducers are reducers that are called on a store when an action matches the action type. Action Reducers are passed the current state object, as well as the matching action. Return the new state object.
 
 ```js
 var INCREMENT = 'INCREMENT';
@@ -53,12 +53,18 @@ console.log(Store.getState().counter); // 1
 ### store.getState
 Returns the current state of the store
 
-### store.subscribe
+### store.subscribe (event, callback)
 Subscribe to store events. Optionally pass an event type, or subscribe to all events that affect the store.
 ```js
 store.subscribe('EVENT', function() {
 	store.getState(); // current state
 });
+```
+
+### store.subscribe (event, callback)
+Unsubscribe callback from Store events. Event Type is also optional
+```js
+store.unsubscribe('EVENT', callback);
 ```
 
 ### store.waitFor
