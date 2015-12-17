@@ -1,28 +1,22 @@
 'use strict';
 
 var Dispatcher = require('flux').Dispatcher;
-var assign = require('lodash/object/assign');
-var invariant = require('invariant');
+var _assign = require('lodash/object/assign');
 var CHANGE_EVENT = 'CHANGE';
 
 var createStore = function(dispatcher, options) {
 
-	invariant(
-		dispatcher instanceof Dispatcher,
-		'First argument must be an instance of a Flux Dispatcher'
-	);
+	if (!(dispatcher instanceof Dispatcher)) {
+		throw new Error('First argument must be an instance of a Flux Dispatcher');
+	}
+	if (options === null || typeof options !== 'object') {
+		throw new Error('Options must be an object');
+	}
+	if (!('getInitialState' in options)) {
+		throw new Error('getInitialState is missing from Options');
+	}
 
-	invariant(
-		options !== null && typeof options === 'object',
-		'Options must be an object'
-	);
-
-	invariant(
-		'getInitialState' in options,
-		'getIntialState is missing from Options'
-	);
-
-	var state = options.getIntialState();
+	var state = options.getInitialState();
 
 	var listeners = {
 		[CHANGE_EVENT]: []
@@ -39,9 +33,6 @@ var createStore = function(dispatcher, options) {
 	var dispatchToken = dispatcher.register(dispatchAction);
 
 	var getState = function() {
-		if (dispatcher.isDispatching()) {
-			dispatcher.waitFor([dispatchToken]);
-		}
 		return state;
 	};
 
@@ -53,7 +44,7 @@ var createStore = function(dispatcher, options) {
 		if (!listeners[event]) {
 			listeners[event] = [];
 		}
-		listeners.push[callback];
+		listeners[event].push(callback);
 	};
 
 	var unsubscribe = function(event, callback) {
@@ -70,13 +61,13 @@ var createStore = function(dispatcher, options) {
 		}
 	};
 
-	return assign({}, options, {
+	return {
 		dispatchToken,
 		listeners,
 		getState,
 		subscribe,
 		unsubscribe
-	});
+	};
 };
 
 module.exports = createStore;
