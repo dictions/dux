@@ -32,7 +32,12 @@ var createStore = function(dispatcher, options) {
 
 	var dispatchToken = dispatcher.register(dispatchAction);
 
-	var getState = function() {
+	var waitFor = function() {
+		dispatcher.waitFor([dispatchToken]);
+		return this;
+	};
+
+	var getState = function(waitFor) {
 		return state;
 	};
 
@@ -45,6 +50,7 @@ var createStore = function(dispatcher, options) {
 			listeners[event] = [];
 		}
 		listeners[event].push(callback);
+		return this;
 	};
 
 	var unsubscribe = function(event, callback) {
@@ -59,15 +65,17 @@ var createStore = function(dispatcher, options) {
 				return c !== callback;
 			});
 		}
+		return this;
 	};
 
-	return {
+	return _assign({}, options, {
 		dispatchToken,
 		listeners,
 		getState,
 		subscribe,
-		unsubscribe
-	};
+		unsubscribe,
+		waitFor
+	});
 };
 
 module.exports = createStore;
