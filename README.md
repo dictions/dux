@@ -14,7 +14,6 @@ Create a store by passing an instance of the Flux Dispatcher and store options.
 var Dux = require('mighty-dux');
 var Dispatcher = require('flux').Dispatcher;
 
-var COUNT_EVENT = 'COUNT_EVENT';
 var app = new Dispatcher();
 
 var Store = Dux.createStore(app, ...options);
