@@ -35,11 +35,11 @@ var Store = Dux.createStore(app, {
 		return {counter: state.counter + 1};
 	},
 	DECREMENT(state, action) {
-		return {counter: state.counter + 1};
+		return {counter: state.counter - 1};
 	}
 });
 
-app.dispatch({type: INCREMENT});
+app.dispatch({type: 'INCREMENT'});
 console.log(Store.getState().counter); // 1
 ```
 
