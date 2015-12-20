@@ -15,8 +15,7 @@ var Dux = require('mighty-dux');
 var Dispatcher = require('flux').Dispatcher;
 
 var app = new Dispatcher();
-
-var Store = Dux.createStore(app, ...options);
+var Store = Dux.createStore(app, {options});
 ```
 
 ## Create Store Options
@@ -28,17 +27,14 @@ var Store = Dux.createStore(app, ...options);
 Action Reducers are reducers that are called on a store when an action matches the action type. Action Reducers are passed the current state object, as well as the matching action. Return the new state object.
 
 ```js
-var INCREMENT = 'INCREMENT';
-var DECREMENT = 'DECREMENT';
-
 var Store = Dux.createStore(app, {
 	getInitialState() {
 		return {counter: 0};
 	},
-	[INCREMENT](state, action) {
+	INCREMENT(state, action) {
 		return {counter: state.counter + 1};
 	},
-	[DECREMENT](state, action) {
+	DECREMENT(state, action) {
 		return {counter: state.counter + 1};
 	}
 });
@@ -70,7 +66,7 @@ store.unsubscribe('EVENT', callback);
 Runs all dispatch reducers for that store, then returns the store itself. Handy for calling the traditional Flux waitFor in other store reducers.
 ```js
 var StoreA = Dux.createStore(app, {
-	[ACTION](state, action) {
+	ACTION_TYPE(state, action) {
 		return StoreB.waitFor().getState();
 	}
 });
