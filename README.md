@@ -48,6 +48,9 @@ console.log(Store.getState().counter); // 1
 ### store.getState
 Returns the current state of the store
 
+### store.dispatchToken
+The Flux dispatch token for the store. Can be used with `Dispatcher.waitFor`
+
 ### store.subscribe (event, callback)
 Subscribe to store events. Optionally pass an event type, or subscribe to all events that affect the store.
 ```js
@@ -60,14 +63,4 @@ store.subscribe('EVENT', function() {
 Unsubscribe callback from Store events. Event Type is also optional
 ```js
 store.unsubscribe('EVENT', callback);
-```
-
-### store.waitFor
-Runs all dispatch reducers for that store, then returns the store itself. Handy for calling the traditional Flux waitFor in other store reducers.
-```js
-var StoreA = Dux.createStore(app, {
-	ACTION_TYPE(state, action) {
-		return StoreB.waitFor().getState();
-	}
-});
 ```

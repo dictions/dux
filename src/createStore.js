@@ -32,12 +32,7 @@ var createStore = function(dispatcher, options) {
 
 	var dispatchToken = dispatcher.register(dispatchAction);
 
-	var waitFor = function() {
-		dispatcher.waitFor([dispatchToken]);
-		return this;
-	};
-
-	var getState = function(waitFor) {
+	var getState = function() {
 		return state;
 	};
 
@@ -67,12 +62,11 @@ var createStore = function(dispatcher, options) {
 	};
 
 	return _assign({}, options, {
-		dispatchToken,
 		listeners,
+		dispatchToken,
 		getState,
 		subscribe,
-		unsubscribe,
-		waitFor
+		unsubscribe
 	});
 };
 

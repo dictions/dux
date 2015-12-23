@@ -14,15 +14,16 @@ test('Throws warning errors', function(t) {
 	t.end();
 });
 
-test('Store is passed dispatchToken and listeners', function(t) {
+test('Store has public API', function(t) {
 	var dispatcher = new Dispatcher();
 	var store = createStore(dispatcher, {
 		getInitialState:() => {}
 	});
 	t.true(_.isString(store.dispatchToken));
-	t.true(_.isObject(store.listeners));
+	t.true(_.isFunction(store.getState));
 	t.true(_.isFunction(store.subscribe));
 	t.true(_.isFunction(store.unsubscribe));
+	t.true(_.isObject(store.listeners));
 	t.end();
 });
 
@@ -82,56 +83,6 @@ test('Store responds to dispatcher', function(t) {
 	t.equal(store.getState().counter, 1);
 	dispatcher.dispatch({type: COUNT_EVENT});
 	t.equal(store.getState().counter, 2);
-	t.end();
-});
-
-test('waitFor runs dispatcher callback on store and returns that store', function(t) {
-	var dispatcher = new Dispatcher();
-	var COUNT_EVENT = 'COUNT_EVENT';
-	var storeA = createStore(dispatcher, {
-		getInitialState() {
-			return {counter: 0};
-		},
-		[COUNT_EVENT](state, action) {
-			return {counter: state.counter + 1};
-		}
-	});
-	var storeB = createStore(dispatcher, {
-		getInitialState() {
-			return {counter: 0};
-		},
-		[COUNT_EVENT](state, action) {
-			return storeA.waitFor().getState();
-		}
-	});
-	storeB.subscribe(function() {
-		t.equal(storeB.getState(), storeA.getState());
-		t.end();
-	});
-	dispatcher.dispatch({type: COUNT_EVENT});
-});
-
-test('waitFor throws on circular dependency', function(t) {
-	var dispatcher = new Dispatcher();
-	var COUNT_EVENT = 'COUNT_EVENT';
-	var storeA = createStore(dispatcher, {
-		getInitialState() {
-			return {counter: 0};
-		},
-		[COUNT_EVENT](state, action) {
-			storeB.waitFor();
-			return {counter: state.counter + 1};
-		}
-	});
-	var storeB = createStore(dispatcher, {
-		getInitialState() {
-			return {counter: 0};
-		},
-		[COUNT_EVENT](state, action) {
-			return storeA.waitFor().getState();
-		}
-	});
-	t.throws(dispatcher.dispatch.bind(null, {type: COUNT_EVENT}));
 	t.end();
 });
 
