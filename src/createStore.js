@@ -1,7 +1,6 @@
 'use strict';
 
 var Dispatcher = require('flux').Dispatcher;
-var _assign = require('lodash/object/assign');
 var CHANGE_EVENT = 'CHANGE';
 
 var createStore = function(dispatcher, options) {
@@ -61,13 +60,14 @@ var createStore = function(dispatcher, options) {
 		}
 	};
 
-	return _assign({}, options, {
+	return {
+		...options,
 		listeners,
 		dispatchToken,
 		getState,
 		subscribe,
 		unsubscribe
-	});
+	};
 };
 
 module.exports = createStore;
