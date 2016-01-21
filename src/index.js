@@ -1,5 +1,7 @@
 'use strict';
 
 module.exports = {
-	createStore: require('./createStore')
+	Store: require('./Store'),
+	createStore: require('./createStore'),
+	createClass: require('./createclass')
 };
