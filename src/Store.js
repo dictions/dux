@@ -2,6 +2,7 @@
 
 var Dispatcher = require('flux').Dispatcher;
 var CHANGE_EVENT = 'CHANGE';
+var RESET_EVENT  = 'RESET';
 
 module.exports = function Store(dispatcher, options) {
 
@@ -18,7 +19,8 @@ module.exports = function Store(dispatcher, options) {
 	var state = options.getInitialState();
 
 	var listeners = {
-		[CHANGE_EVENT]: []
+		[CHANGE_EVENT]: [],
+		[RESET_EVENT]:  []
 	};
 
 	var dispatchAction = function(action) {
@@ -33,6 +35,12 @@ module.exports = function Store(dispatcher, options) {
 
 	var getState = function() {
 		return state;
+	};
+
+	var resetState = function(newState) {
+		state = newState;
+		var callbacks = listeners[RESET_EVENT].concat(listeners[CHANGE_EVENT]);
+		callbacks.forEach(c => c());
 	};
 
 	var subscribe = function(event, callback) {
@@ -65,6 +73,7 @@ module.exports = function Store(dispatcher, options) {
 		listeners,
 		dispatchToken,
 		getState,
+		resetState,
 		subscribe,
 		unsubscribe
 	});

@@ -48,6 +48,9 @@ console.log(Store.getState().counter); // 1
 ### store.getState
 Returns the current state of the store
 
+### store.resetState
+Resets the state of the store and fires `RESET` and `CHANGE` callbacks. This is useful for rehydrating stores on the client in isomorphic applications.
+
 ### store.dispatchToken
 The Flux dispatch token for the store. Can be used with `Dispatcher.waitFor`
 

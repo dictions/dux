@@ -72,6 +72,33 @@ test('Sets state with getInitialState and getState returns state', function(t) {
 	t.end();
 });
 
+test('Resets state and calls reset and change listeners', function(t) {
+	var dispatcher = new Dispatcher();
+	var initialState = {bool: true};
+	var newState = {bool: false};
+	var store = new Store(dispatcher, {
+		getInitialState() {
+			return initialState;
+		}
+	});
+
+	t.plan(4);
+
+	// should get called once
+	store.subscribe('CHANGE', function() {
+		t.true(true);
+	});
+	// should get called once
+	store.subscribe('RESET', function() {
+		t.true(true);
+	});
+
+	t.equal(store.getState(), initialState);
+
+	store.resetState(newState);
+	t.equal(store.getState(), newState);
+});
+
 test('Store responds to dispatcher', function(t) {
 	var dispatcher = new Dispatcher();
 	var COUNT_EVENT = 'COUNT_EVENT';
