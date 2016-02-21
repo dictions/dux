@@ -2,6 +2,8 @@
 
 Flux stores inspired by Redux
 
+![build status](https://circleci.com/gh/dictions/mighty-dux.svg?style=shield&circle-token=9f7931841df5f2be93ba50a6cfbd609cce9e4b58)
+
 ## Install
 ```
 $ npm install mighty-dux flux --save
@@ -102,8 +104,8 @@ Unsubscribe callback from Store events. Event Type is also optional
 store.unsubscribe('EVENT', callback);
 ```
 
-## store.listeners
+### store.listeners
 Object of event listeners per store event.
 
-## store.waitFor (event)
+### store.waitFor (event)
 Calls the dispatcher instance's waitFor method.
