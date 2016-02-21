@@ -25,6 +25,7 @@ test('Store has public API', function(t) {
 	t.true(_.isFunction(store.getState));
 	t.true(_.isFunction(store.subscribe));
 	t.true(_.isFunction(store.unsubscribe));
+	t.true(_.isFunction(store.waitFor));
 	t.true(_.isObject(store.listeners));
 	t.end();
 });
