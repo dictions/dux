@@ -104,3 +104,6 @@ store.unsubscribe('EVENT', callback);
 
 ## store.listeners
 Object of event listeners per store event.
+
+## store.waitFor (event)
+Calls the dispatcher instance's waitFor method.

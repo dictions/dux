@@ -68,6 +68,10 @@ module.exports = function Store(options, dispatcher) {
 		}
 	};
 
+	var waitFor = function(token) {
+		dispatcher.waitFor(token);
+	};
+
 	Object.assign(this, {
 		...options,
 		listeners,
@@ -75,6 +79,7 @@ module.exports = function Store(options, dispatcher) {
 		getState,
 		resetState,
 		subscribe,
-		unsubscribe
+		unsubscribe,
+		waitFor
 	});
 };
