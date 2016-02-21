@@ -2,6 +2,6 @@
 
 var Store = require('./Store');
 
-module.exports = function createClass(dispatcher, options) {
-	return Store.bind(null, dispatcher, options);
+module.exports = function createClass(options) {
+	return Store.bind(null, options);
 };

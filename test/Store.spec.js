@@ -9,17 +9,17 @@ test('Throws warning errors', function(t) {
 	var dispatcher = new Dispatcher();
 
 	t.throws(Store);
-	t.throws(Store.bind(null, dispatcher, 'not object'));
-	t.throws(Store.bind(null, null, {getInitialState() {}}));
-	t.throws(Store.bind(null, dispatcher, {}));
+	t.throws(Store.bind(null, 'not object', dispatcher));
+	t.throws(Store.bind(null, {getInitialState() {}}, null));
+	t.throws(Store.bind(null, {}, dispatcher));
 	t.end();
 });
 
 test('Store has public API', function(t) {
 	var dispatcher = new Dispatcher();
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState: () => {}
-	});
+	}, dispatcher);
 
 	t.true(_.isString(store.dispatchToken));
 	t.true(_.isFunction(store.getState));
@@ -31,7 +31,7 @@ test('Store has public API', function(t) {
 
 test('Store is passed all option props', function(t) {
 	var dispatcher = new Dispatcher();
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState: function() {
 			return {
 				firstName: 'ian',
@@ -42,7 +42,7 @@ test('Store is passed all option props', function(t) {
 			return `${this.getState().firstName} ${this.getState().lastName}`;
 		},
 		arbitraryProp: true
-	});
+	}, dispatcher);
 
 	t.true(store.arbitraryProp);
 	t.equals(store.getFullName(), 'ian williams');
@@ -61,11 +61,11 @@ test('Sets state with getInitialState and getState returns state', function(t) {
 		},
 		array: [1, 3]
 	};
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState() {
 			return state;
 		}
-	});
+	}, dispatcher);
 
 	t.equal(store.getInitialState(), state);
 	t.equal(store.getState(), state);
@@ -76,11 +76,11 @@ test('Resets state and calls reset and change listeners', function(t) {
 	var dispatcher = new Dispatcher();
 	var initialState = {bool: true};
 	var newState = {bool: false};
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState() {
 			return initialState;
 		}
-	});
+	}, dispatcher);
 
 	t.plan(4);
 
@@ -102,14 +102,14 @@ test('Resets state and calls reset and change listeners', function(t) {
 test('Store responds to dispatcher', function(t) {
 	var dispatcher = new Dispatcher();
 	var COUNT_EVENT = 'COUNT_EVENT';
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState() {
 			return {counter: 0};
 		},
 		[COUNT_EVENT](state, action) {
 			return {counter: state.counter + 1};
 		}
-	});
+	}, dispatcher);
 
 	dispatcher.dispatch({type: COUNT_EVENT});
 	t.equal(store.getState().counter, 1);
@@ -121,12 +121,12 @@ test('Store responds to dispatcher', function(t) {
 test('Subscribe callbacks run after dispatch', function(t) {
 	var EVENT = 'EVENT';
 	var dispatcher = new Dispatcher();
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState:() => {},
 		[EVENT](state, action) {
 			return state;
 		}
-	});
+	}, dispatcher);
 
 	t.plan(2);
 	// should get called once
@@ -144,9 +144,9 @@ test('Unsubscribe removes events', function(t) {
 	var dispatcher = new Dispatcher();
 	var CHANGE = 'CHANGE';
 	var EVENT = 'EVENT';
-	var store = new Store(dispatcher, {
+	var store = new Store({
 		getInitialState:() => {}
-	});
+	}, dispatcher);
 	var callback = () => {};
 
 	store.subscribe(callback);

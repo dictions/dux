@@ -4,7 +4,7 @@ var Dispatcher = require('flux').Dispatcher;
 var CHANGE_EVENT = 'CHANGE';
 var RESET_EVENT  = 'RESET';
 
-module.exports = function Store(dispatcher, options) {
+module.exports = function Store(options, dispatcher) {
 
 	if (!(dispatcher instanceof Dispatcher)) {
 		throw new Error('First argument must be an instance of a Flux Dispatcher');
