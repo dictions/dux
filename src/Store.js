@@ -27,7 +27,10 @@ module.exports = function Store(options, dispatcher) {
 		if (action.type in options) {
 			state = options[action.type](state, action);
 			var callbacks = (listeners[action.type] || []).concat(listeners[CHANGE_EVENT]);
-			callbacks.forEach(c => c());
+			callbacks.forEach(function(c) {
+				var currentCallbacks = (listeners[action.type] || []).concat(listeners[CHANGE_EVENT]);
+				if (currentCallbacks.indexOf(c) > -1) c();
+			});
 		}
 	};
 
@@ -40,7 +43,10 @@ module.exports = function Store(options, dispatcher) {
 	var resetState = function(newState) {
 		state = newState;
 		var callbacks = listeners[RESET_EVENT].concat(listeners[CHANGE_EVENT]);
-		callbacks.forEach(c => c());
+		callbacks.forEach(function(c) {
+			var currentCallbacks = listeners[RESET_EVENT].concat(listeners[CHANGE_EVENT]);
+			if (currentCallbacks.indexOf(c) > -1) c();
+		});
 	};
 
 	var subscribe = function(event, callback) {
