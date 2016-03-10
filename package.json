@@ -1,6 +1,6 @@
 {
   "name": "mighty-dux",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Redux inspired Flux Stores",
   "main": "lib/index.js",
   "scripts": {

@@ -160,3 +160,25 @@ test('Unsubscribe removes events', function(t) {
 	t.equal(store.listeners[EVENT].length, 0);
 	t.end();
 });
+
+test('Store ignores events that do not match an action reducer', function(t) {
+	var EVENT = 'EVENT';
+	var NOT_EVENT = 'NOT_EVENT';
+	var dispatcher = new Dispatcher();
+	var store = new Store({
+		getInitialState:() => {},
+		[EVENT](state, action) {
+			return state;
+		}
+	}, dispatcher);
+
+	t.plan(1);
+	store.subscribe(EVENT, function() {
+		t.true(true);
+	});
+	store.subscribe(NOT_EVENT, function() {
+		t.true(true);
+	});
+	dispatcher.dispatch({type: EVENT});
+	dispatcher.dispatch({type: NOT_EVENT});
+});

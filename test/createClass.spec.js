@@ -11,6 +11,5 @@ test('Creates a Store class', function(t) {
 	});
 	var store = new StoreClass(new Dispatcher);
 	t.true(store instanceof StoreClass && store instanceof Store);
-	t.false(store instanceof Boolean);
 	t.end();
 });
