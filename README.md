@@ -46,15 +46,15 @@ Action Reducers are reducers that are called on a store when an action matches t
 
 ```js
 var Store = Dux.createStore(app, {
-	getInitialState() {
-		return {counter: 0};
-	},
-	INCREMENT(state, action) {
-		return {counter: state.counter + 1};
-	},
-	DECREMENT(state, action) {
-		return {counter: state.counter - 1};
-	}
+    getInitialState() {
+        return {counter: 0};
+    },
+    INCREMENT(state, action) {
+        return {counter: state.counter + 1};
+    },
+    DECREMENT(state, action) {
+        return {counter: state.counter - 1};
+    }
 });
 
 app.dispatch({type: 'INCREMENT'});
@@ -66,16 +66,16 @@ Any other methods or properties have direct access to the store object via the t
 
 ```js
 var Store = Dux.createStore(app, {
-	getInitialState() {
-		return {
-			firstName: 'ian',
-			lastName: 'williams'
-		};
-	},
-	fullName() {
-		var {firstName, lastName} = this.getState();
-		return firstName + ' ' + lastName;
-	}
+    getInitialState() {
+        return {
+            firstName: 'ian',
+            lastName: 'williams'
+        };
+    },
+    fullName() {
+        var {firstName, lastName} = this.getState();
+        return firstName + ' ' + lastName;
+    }
 });
 ```
 
@@ -94,7 +94,7 @@ The Flux dispatch token for the store. Can be used with `Dispatcher.waitFor`
 Subscribe to store events. Optionally pass an event type, or subscribe to all events that affect the store.
 ```js
 store.subscribe('EVENT', function() {
-	store.getState(); // current state
+    store.getState(); // current state
 });
 ```
 
