@@ -3,5 +3,5 @@
 module.exports = {
 	Store: require('./Store'),
 	createStore: require('./createStore'),
-	createClass: require('./createclass')
+	createClass: require('./createClass')
 };
